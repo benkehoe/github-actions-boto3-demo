@@ -1,0 +1,50 @@
+Parameters:
+  RepoName:
+    Type: String
+
+Resources:
+  Role1:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSDenyAll
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GithubOidc
+            Condition:
+              StringLike:
+                vstoken.actions.githubusercontent.com:sub: !Sub repo:${RepoName}:*
+
+  Role2:
+    Type: AWS::IAM::Role
+    Properties:
+      ManagedPolicyArns:
+        - arn:aws:iam::aws:policy/AWSDenyAll
+      AssumeRolePolicyDocument:
+        Statement:
+          - Effect: Allow
+            Action: sts:AssumeRoleWithWebIdentity
+            Principal:
+              Federated: !Ref GithubOidc
+            Condition:
+              StringLike:
+                vstoken.actions.githubusercontent.com:sub: !Sub repo:${RepoName}:*
+
+  GithubOidc:
+    Type: AWS::IAM::OIDCProvider
+    Properties:
+      Url: https://vstoken.actions.githubusercontent.com
+      ThumbprintList: [a031c46782e6e6c662c2c87c76da9aa62ccabd8e]
+      ClientIdList:
+        - !Sub https://github.com/${RepoName}
+        - "sigstore"
+        - "sts.amazonaws.com"
+
+Outputs:
+  Role1:
+    Value: !GetAtt Role1.Arn
+  Role2:
+    Value: !GetAtt Role2.Arn

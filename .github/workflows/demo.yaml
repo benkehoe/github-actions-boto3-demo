@@ -1,0 +1,31 @@
+on:
+  workflow_dispatch: {}
+  push:
+    branches:
+      - main
+jobs:
+  RunDemo:
+    runs-on: ubuntu-latest
+    permissions:
+      id-token: write
+    env:
+      # Option 1: set the config file path. As many roles as you want!
+      AWS_CONFIG_FILE: .github/workflows/aws_config
+
+      # Option 2: set environment variables
+      AWS_ROLE_ARN: arn:aws:iam::515709759869:role/github-oidc-test-Role1-Z8L6FUWE1CVR
+      AWS_WEB_IDENTITY_TOKEN_SERVER: GitHub
+      AWS_ROLE_SESSION_NAME: UsingEnvVar # Not required!
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          ref: main
+      - uses: actions/setup-python@v2
+        with:
+          python-version: 3
+      - name: install
+        run: |
+          pip install boto3 requests pyjwt
+      - name: run
+        run: |
+          python .github/workflows/demo.py

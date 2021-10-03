@@ -1,0 +1,29 @@
+[default]
+role_arn = arn:aws:iam::515709759869:role/github-oidc-test-Role1-Z8L6FUWE1CVR
+web_identity_token_server = GitHub
+role_session_name = DefaultProfile
+region = us-east-2
+
+[profile role-2]
+role_arn = arn:aws:iam::515709759869:role/github-oidc-test-Role2-CXH6FET0DUJU
+web_identity_token_server = GitHub
+role_session_name = Role2Profile
+region = us-east-2
+
+[profile manual-config-1]
+role_arn = arn:aws:iam::515709759869:role/github-oidc-test-Role1-Z8L6FUWE1CVR
+web_identity_token_server = GitHub,sigstore
+role_session_name = ManualConfig1
+region = us-east-2
+
+[profile manual-config-2]
+role_arn = arn:aws:iam::515709759869:role/github-oidc-test-Role1-Z8L6FUWE1CVR
+web_identity_token_server = ACTIONS_ID_TOKEN_REQUEST_URL,ACTIONS_ID_TOKEN_REQUEST_TOKEN
+role_session_name = ManualConfig2
+region = us-east-2
+
+[profile manual-config-3]
+role_arn = arn:aws:iam::515709759869:role/github-oidc-test-Role1-Z8L6FUWE1CVR
+web_identity_token_server = ACTIONS_ID_TOKEN_REQUEST_URL,ACTIONS_ID_TOKEN_REQUEST_TOKEN,sigstore
+role_session_name = ManualConfig3
+region = us-east-2
